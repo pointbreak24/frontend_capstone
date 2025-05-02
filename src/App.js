@@ -1,30 +1,33 @@
 // Import necessary modules from React library
-import React, { useEffect } from 'react';
+import React from 'react';
 
 // Import components for routing from react-router-dom library
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-// Import custom Navbar component
+// Import custom components
 import Navbar from './Components/Navbar/Navbar';
-
-// ✅ Import the Landing_page component
 import Landingpage from './Components/LandingPage/LandingPage';
+import Login from './Components/Login/Login';
+import Sign_Up from './Components/Sign_Up/Sign_Up';
+
+// Optional: Placeholder Appointments component
+const AppointmentsPage = () => <h2 style={{ padding: '2rem' }}>Appointments Page (Coming Soon)</h2>;
 
 // Function component for the main App
 function App() {
-
-  // Render the main App component
   return (
     <div className="App">
       {/* Set up BrowserRouter for routing */}
       <BrowserRouter>
         {/* Display the Navbar component */}
-        <Navbar/>
+        <Navbar />
 
-        {/* Set up the Routes for different pages */}
+        {/* Define application routes */}
         <Routes>
-          {/* ✅ Home route for Landing page */}
           <Route path="/" element={<Landingpage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Sign_Up />} />
+          <Route path="/appointments" element={<AppointmentsPage />} />
         </Routes>
       </BrowserRouter>
     </div>
