@@ -13,7 +13,6 @@ const Sign_Up = () => {
 
     const register = async (e) => {
         e.preventDefault();
-
         const response = await fetch(`${API_URL}/api/auth/register`, {
             method: "POST",
             headers: {
@@ -22,8 +21,8 @@ const Sign_Up = () => {
             body: JSON.stringify({
                 name,
                 email,
+                password,
                 phone,
-                password
             }),
         });
 
@@ -37,12 +36,17 @@ const Sign_Up = () => {
             navigate("/");
             window.location.reload();
         } else {
-            if (json.errors) {
-                for (const error of json.errors) {
-                    setShowerr(error.msg);
-                }
-            } else {
-                setShowerr(json.error);
+            // Check if backend returned an array of errors
+            if (json.errors && Array.isArray(json.errors)) {
+                const errorMessages = json.errors.map((error) => error.msg).join(", ");
+                setShowerr(errorMessages);
+            } else if (json.error) {
+                // If json.error is an object, try to extract the message; otherwise convert it to string
+                const errorMsg =
+                    typeof json.error === 'object'
+                        ? json.error.msg || JSON.stringify(json.error)
+                        : json.error;
+                setShowerr(errorMsg);
             }
         }
     };
@@ -53,26 +57,6 @@ const Sign_Up = () => {
                 <div className="signup-form">
                     <form method="POST" onSubmit={register}>
                         <div className="form-group">
-                            <label htmlFor="email">Email</label>
-                            <input
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                type="email"
-                                name="email"
-                                id="email"
-                                className="form-control"
-                                placeholder="Enter your email"
-                                aria-describedby="helpId"
-                            />
-                            {showerr && (
-                                <div className="err" style={{ color: 'red' }}>
-                                    {showerr}
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Using sample solution format for these fields */}
-                        <div className="form-group">
                             <label htmlFor="name">Name</label>
                             <input
                                 value={name}
@@ -82,10 +66,21 @@ const Sign_Up = () => {
                                 id="name"
                                 className="form-control"
                                 placeholder="Enter your name"
-                                aria-describedby="helpId"
                             />
                         </div>
-
+                        <div className="form-group">
+                            <label htmlFor="email">Email</label>
+                            <input
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                type="email"
+                                name="email"
+                                id="email"
+                                className="form-control"
+                                placeholder="Enter your email"
+                            />
+                            {showerr && <div className="err" style={{ color: 'red' }}>{showerr}</div>}
+                        </div>
                         <div className="form-group">
                             <label htmlFor="phone">Phone</label>
                             <input
@@ -96,30 +91,21 @@ const Sign_Up = () => {
                                 id="phone"
                                 className="form-control"
                                 placeholder="Enter your phone number"
-                                aria-describedby="helpId"
                             />
                         </div>
-
                         <div className="form-group">
                             <label htmlFor="password">Password</label>
                             <input
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
+                                type="password"
                                 name="password"
                                 id="password"
                                 className="form-control"
                                 placeholder="Enter your password"
-                                aria-describedby="helpId"
                             />
                         </div>
-
-                        <button type="submit" className="btn btn-primary" style={{ marginTop: '15px' }}>
-                            Sign Up
-                        </button>
-
-                        <p style={{ marginTop: '10px' }}>
-                            Already have an account? <Link to="/login">Login here</Link>
-                        </p>
+                        <button type="submit" className="btn btn-primary">Sign Up</button>
                     </form>
                 </div>
             </div>
