@@ -10,9 +10,7 @@ import Landingpage from './Components/LandingPage/LandingPage';
 import Login from './Components/Login/Login';
 import Sign_Up from './Components/Sign_Up/Sign_Up';
 import InstantConsultation from './Components/InstantConsultation/InstantConsultation';
-
-// Optional: Placeholder Appointments component
-const AppointmentsPage = () => <h2 style={{ padding: '2rem' }}>Appointments Page (Coming Soon)</h2>;
+import BookingConsultation from './Components/BookingConsultation';
 
 // Function component for the main App
 function App() {
@@ -28,7 +26,7 @@ function App() {
           <Route path="/" element={<Landingpage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Sign_Up />} />
-          <Route path="/appointments" element={<AppointmentsPage />} />
+          <Route path="/appointments" element={<BookingConsultation />} />
           <Route path="/instant-consultation" element={<InstantConsultation />} />
         </Routes>
       </BrowserRouter>
